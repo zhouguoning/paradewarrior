@@ -1,0 +1,118 @@
+{
+  "validation": {
+    "split": "2026-03-01",
+    "params": [
+      0.5,
+      0.8,
+      5,
+      0.3,
+      0.0
+    ],
+    "n": 514,
+    "within10": 0.5894941634241245,
+    "median_abs_err": 63431.33786291076,
+    "median_pct_err": 0.005338957000817324,
+    "r2": 0.47693235861843897
+  },
+  "ablation": {
+    "v1: no stacking, building median, no shift": {
+      "n": 421,
+      "within10": 0.5344418052256532,
+      "median_abs_err": 70522.00101577246,
+      "median_pct_err": 0.05140180936146743,
+      "r2": -0.09565730970544206
+    },
+    "+ stacked-unit bedroom imputation": {
+      "n": 421,
+      "within10": 0.5344418052256532,
+      "median_abs_err": 70522.00101577246,
+      "median_pct_err": 0.05140180936146743,
+      "r2": -0.09564123855099438
+    },
+    "+ building quantile": {
+      "n": 421,
+      "within10": 0.5486935866983373,
+      "median_abs_err": 64657.880878711585,
+      "median_pct_err": 0.04624689361293943,
+      "r2": 0.11856398781749444
+    },
+    "+ selection-bias shift (final)": {
+      "n": 421,
+      "within10": 0.5486935866983373,
+      "median_abs_err": 64657.880878711585,
+      "median_pct_err": 0.04624689361293943,
+      "r2": 0.11856398781749444
+    }
+  },
+  "test": {
+    "split": "2026-06-01",
+    "n": 421,
+    "within10": 0.5486935866983373,
+    "median_abs_err": 64657.880878711585,
+    "median_pct_err": 0.04624689361293943,
+    "r2": 0.11856398781749444
+  },
+  "test_by_tier": {
+    "building": {
+      "n": 26,
+      "within10": 0.4230769230769231,
+      "median_abs_err": 59821.503959680966,
+      "median_pct_err": -0.07837915074974872,
+      "r2": -1.9992964803633297
+    },
+    "building_beds": {
+      "n": 141,
+      "within10": 0.6099290780141844,
+      "median_abs_err": 61917.546499244985,
+      "median_pct_err": 0.05493334936929539,
+      "r2": 0.358222526332553
+    },
+    "own_sale+building": {
+      "n": 21,
+      "within10": 0.14285714285714285,
+      "median_abs_err": 182755.54673761327,
+      "median_pct_err": 0.2109523538728404,
+      "r2": -0.19437351335764985
+    },
+    "own_sale+building_beds": {
+      "n": 209,
+      "within10": 0.583732057416268,
+      "median_abs_err": 53803.99424753757,
+      "median_pct_err": 0.03788274545588699,
+      "r2": 0.233239996379209
+    },
+    "suburb_beds": {
+      "n": 20,
+      "within10": 0.45,
+      "median_abs_err": 83382.93476558337,
+      "median_pct_err": 0.04506200585929909,
+      "r2": -0.7880456568995806
+    }
+  },
+  "baseline_citywide_last_sale": {
+    "n": 234,
+    "within10": 0.4829059829059829,
+    "median_abs_err": 90250.45538348617,
+    "median_pct_err": 0.08693449674033582,
+    "r2": 0.3993080806415128
+  },
+  "model_on_same_subset": {
+    "n": 234,
+    "within10": 0.5341880341880342,
+    "median_abs_err": 63541.48169278962,
+    "median_pct_err": 0.04572607308619203,
+    "r2": 0.1667151542586126
+  },
+  "final_tiers": {
+    "suburb": 75364,
+    "own_sale+building_beds": 36921,
+    "building": 29333,
+    "building_beds": 22183,
+    "own_sale+building": 11026,
+    "suburb_beds": 4352,
+    "own_sale+suburb": 1292,
+    "own_sale+suburb_beds": 958,
+    "city": 264,
+    "own_sale+city": 18
+  }
+}

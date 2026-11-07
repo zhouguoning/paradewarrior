@@ -1,0 +1,13 @@
+
+# Files the quickstart writes when it runs
+*.mp4.tmp
+*.zip
+*.zip
+.env
+.ipynb_checkpoints/
+.venv/
+__pycache__/
+data/
+explore_out.txt
+out/
+test_predictions.csv
