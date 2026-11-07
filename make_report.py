@@ -5,7 +5,7 @@ import model as M
 
 m = json.load(open("metrics.json"))
 tp = pd.read_csv("test_predictions.csv", parse_dates=["sold_date"])
-w_b, w_s, half, bq, sh = m["validation"]["params"]
+P = m["validation"]["params"]; half = P["half"]
 
 # --- extra insights from the final model (data to 31 Aug 2026)
 mf = M.build_model(M.FINAL_DATE + pd.Timedelta(days=1))
@@ -16,8 +16,8 @@ yoy = float(np.exp(idx[-1] - idx[-5]) - 1)
 since17 = float(city.iloc[-1] - 1)
 p = M.pairs_of(M.S[M.S.sold_date <= M.FINAL_DATE])
 ds = M.drift(p, idx, "suburb", 15, M.FINAL_DATE).sort_values()
-_, t_nostack = M.predict(mf, M.F, w_b, w_s, half, bq, sh, use_stack=False)
-_, t_stack = M.predict(mf, M.F, w_b, w_s, half, bq, sh, use_stack=True)
+_, t_nostack = M.predict(mf, M.F, **{**P, "use_stack": False})
+_, t_stack = M.predict(mf, M.F, **P)
 bb_before = int(np.isin(t_nostack, ["building_beds", "own_sale+building_beds"]).sum())
 bb_after = int(np.isin(t_stack, ["building_beds", "own_sale+building_beds"]).sum())
 
@@ -91,6 +91,9 @@ shrunk toward zero where evidence is thin. Biggest gaps, % a year versus the cit
 <p><b>Stacked units share layouts.</b> 73% of addresses have no bedroom count. But Unit 1204 usually sits directly above Unit 1104 with the same floor plan,
 so we borrowed bedrooms from the same position on other floors of the same building. That raised by about 45% the number of flats we can match to a
 same-building, same-bedroom comparable.</p>
+<p><b>Height pays, a little.</b> Within the same building and bedroom count, each extra floor added about
+{100*m['final_floor_slope']:.1f}% to the sale price, so floor 15 versus floor 2 is worth roughly {100*(np.exp(13*m['final_floor_slope'])-1):.0f}%.
+We read the floor straight out of the unit number (Unit 1204 is on floor 12).</p>
 <p><b>The scoring window is selective.</b> Only sales under $1.2M are scored. On our test our estimates ran a median {pct(T['median_pct_err'])} high,
 part of which is this truncation: expensive flats that happen to sell cheaply stay in, cheap flats that sell dear drop out.</p>
 
@@ -101,8 +104,8 @@ part of which is this truncation: expensive flats that happen to sell cheaply st
 <div><b>{T['r2']:.2f}</b>R² (dollar scale)</div>
 </div>
 {bar_svg([(k, int(v)) for k, v in buckets])}
-<p>We picked every tuning parameter on a separate validation fold (built on sales before 1 March 2026, tested on March to May:
-{pct(V['within10'])} within 10%, R² {V['r2']:.2f}). Only then did we rebuild on sales before <b>1 June 2026</b> and score June to August once.
+<p>We picked every tuning parameter on two earlier validation folds (December 2025 to February 2026, and March to May 2026;
+average {pct(V['within10'])} within 10% over {V['n']} sales). Only then did we rebuild on sales before <b>1 June 2026</b> and score June to August once.
 No test-period price was used to build or tune anything. All {T['n']} test flats received a prediction.</p>
 <p>R² is low because a handful of large misses dominate a squared-error metric; the judged metric (within 10%) is about the typical flat, where we do well.</p>
 
@@ -127,6 +130,7 @@ smoothed with a second-difference penalty, outliers trimmed at 4 MAD.</li>
 <li><b>Local drift.</b> Each suburb's and building's growth above or below the city, as % per year, shrunk toward zero (Bayesian-style, by holding years).</li>
 <li><b>Value ladder.</b> Every past sale is moved to 31 August 2026. For each flat we take the best evidence available:
 same building and bedrooms → same building (lower quantile when bedrooms unknown) → suburb and bedrooms → suburb → city.</li>
+<li><b>Floor and thin cells.</b> Building comparables are moved to the target flat's floor, and building-and-bedroom groups with few sales are shrunk toward the suburb-and-bedroom median.</li>
 <li><b>Blend.</b> If the flat sold before, blend its own index-adjusted sale with the building comparable in log space,
 trusting old sales less (weight halves after {half:g} years).</li>
 </ol>
@@ -137,8 +141,11 @@ trusting old sales less (weight halves after {half:g} years).</li>
 <ul>
 <li>Flats with an old sale but no known bedrooms are weak (few test cases, large misses): the building may mix studios and 3-bedders.</li>
 <li>A global downward shift for the $1.2M truncation did not help on validation, so we left it out rather than tune on the test.</li>
+<li>Tuning on two folds raised validation accuracy from 55.9% to 57.5%, but on the final test it scored 53.9% against 54.9% for our simpler first version.
+With 421 test sales, one percentage point is about four flats, well inside the noise, so we kept the validation-chosen settings rather than pick by test score.
+Like-for-like against the baseline it improved (56.0% vs 53.4% for v1), and R² rose from 0.12 to 0.20.</li>
 <li>About 6,700 shop and office titles get a value but are probably poorly valued; they are not scored.</li>
-<li>Not yet used: floor level, aspect, views. Floor is recoverable from unit numbers (Unit 1204 → floor 12) and is the obvious next step.</li>
+<li>Not yet used: aspect and views. Both need outside data (building footprints and orientation) and a new dated check.</li>
 </ul>
 <p class="muted">Estimates are automated and indicative only. Data © Microburbs.</p>
 </main></body></html>"""

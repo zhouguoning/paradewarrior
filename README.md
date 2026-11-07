@@ -4,14 +4,14 @@
 
 **Who it helps:** buyers and sellers who want a price to check before negotiating, and landlords and everyday investors sizing up a flat.
 
-**Result:** on 421 held-out flat sales (1 June to 31 August 2026, under $1.2M), 54.9% of estimates were within 10% of the sale price, against 48.3% for the task page's best baseline (last sale x citywide index). Details in [`report.html`](report.html).
+**Result:** on 421 held-out flat sales (1 June to 31 August 2026, under $1.2M), 53.9% of estimates were within 10% of the sale price; on the 234 flats the baseline can value, 56.0% against 48.3% for the task page's best baseline (last sale x citywide index). Details in [`report.html`](report.html).
 
 ## The clever step
 
 A value ladder that always uses the most local evidence available:
 
 1. **Own past sale**, moved to 31 Aug 2026 with our own repeat-sales index (quarterly, smoothed, outlier-trimmed), plus each suburb's and building's growth above or below the city, shrunk toward zero where evidence is thin.
-2. **Same building, same bedrooms.** 73% of addresses have no bedroom count, so we borrow it from the flats stacked directly above and below (Unit 1204 sits over Unit 1104 with the same plan). That lifted bedroom-matched building comparables by about 45%.
+2. **Same building, same bedrooms.** 73% of addresses have no bedroom count, so we borrow it from the flats stacked directly above and below (Unit 1204 sits over Unit 1104 with the same plan). Comparables are also adjusted for floor (about 0.5% a floor, read from the unit number). Stacking lifted bedroom-matched building comparables by about 45%.
 3. Suburb and bedrooms, suburb, city as fallbacks, so no row is ever blank.
 
 Own-sale and building estimates are blended in log space, trusting old sales less. Every parameter was tuned on a separate March to May 2026 validation fold before the June to August test was scored once.

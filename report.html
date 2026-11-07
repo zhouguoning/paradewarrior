@@ -15,9 +15,9 @@ code{background:var(--card);padding:1px 5px;border-radius:4px}
 <p class="muted">Microburbs Hackathon · Task 5 · team paradewarrior · 7 November 2026</p>
 <h1>Value every flat: a repeat-sales ladder that knows which building you're in</h1>
 <p>We valued all 181,711 City of Sydney addresses as at 31 August 2026. On 421 later flat sales we held out
-(1 June to 31 August 2026, under $1.2M), <b>54.9%</b> of our estimates landed within 10% of the sale price.
+(1 June to 31 August 2026, under $1.2M), <b>53.9%</b> of our estimates landed within 10% of the sale price.
 On the same flats where the task page's best baseline applies (last sale updated by a citywide index), that baseline scored
-48.3% and we scored 53.4%, with typical dollar error down from $90,250 to $63,541.</p>
+48.3% and we scored 56.0%, with typical dollar error down from $90,250 to $64,062.</p>
 
 <h2>What we found along the way</h2>
 <div class="big">
@@ -34,26 +34,29 @@ shrunk toward zero where evidence is thin. Biggest gaps, % a year versus the cit
 <p><b>Stacked units share layouts.</b> 73% of addresses have no bedroom count. But Unit 1204 usually sits directly above Unit 1104 with the same floor plan,
 so we borrowed bedrooms from the same position on other floors of the same building. That raised by about 45% the number of flats we can match to a
 same-building, same-bedroom comparable.</p>
-<p><b>The scoring window is selective.</b> Only sales under $1.2M are scored. On our test our estimates ran a median 4.6% high,
+<p><b>Height pays, a little.</b> Within the same building and bedroom count, each extra floor added about
+0.5% to the sale price, so floor 15 versus floor 2 is worth roughly 7%.
+We read the floor straight out of the unit number (Unit 1204 is on floor 12).</p>
+<p><b>The scoring window is selective.</b> Only sales under $1.2M are scored. On our test our estimates ran a median 5.0% high,
 part of which is this truncation: expensive flats that happen to sell cheaply stay in, cheap flats that sell dear drop out.</p>
 
 <h2>What our held-out check showed</h2>
 <div class="big">
-<div><b>54.9%</b>within 10% (421 test sales)</div>
-<div><b>$64,658</b>median absolute error</div>
-<div><b>0.12</b>R² (dollar scale)</div>
+<div><b>53.9%</b>within 10% (421 test sales)</div>
+<div><b>$66,841</b>median absolute error</div>
+<div><b>0.20</b>R² (dollar scale)</div>
 </div>
-<svg viewBox="0 0 640 146" role="img"><text x="0" y="26" class="lab">within 5%</text><rect x="200" y="12" width="380.0" height="20" rx="3" fill="#2b6cb0"/><text x="586.0" y="27" class="val">135</text><text x="0" y="60" class="lab">5–10%</text><rect x="200" y="46" width="270.2" height="20" rx="3" fill="#2b6cb0"/><text x="476.2" y="61" class="val">96</text><text x="0" y="94" class="lab">10–20%</text><rect x="200" y="80" width="267.4" height="20" rx="3" fill="#2b6cb0"/><text x="473.4" y="95" class="val">95</text><text x="0" y="128" class="lab">over 20%</text><rect x="200" y="114" width="267.4" height="20" rx="3" fill="#2b6cb0"/><text x="473.4" y="129" class="val">95</text></svg>
-<p>We picked every tuning parameter on a separate validation fold (built on sales before 1 March 2026, tested on March to May:
-58.9% within 10%, R² 0.48). Only then did we rebuild on sales before <b>1 June 2026</b> and score June to August once.
+<svg viewBox="0 0 640 146" role="img"><text x="0" y="26" class="lab">within 5%</text><rect x="200" y="12" width="380.0" height="20" rx="3" fill="#2b6cb0"/><text x="586.0" y="27" class="val">132</text><text x="0" y="60" class="lab">5–10%</text><rect x="200" y="46" width="273.5" height="20" rx="3" fill="#2b6cb0"/><text x="479.5" y="61" class="val">95</text><text x="0" y="94" class="lab">10–20%</text><rect x="200" y="80" width="290.8" height="20" rx="3" fill="#2b6cb0"/><text x="496.8" y="95" class="val">101</text><text x="0" y="128" class="lab">over 20%</text><rect x="200" y="114" width="267.7" height="20" rx="3" fill="#2b6cb0"/><text x="473.7" y="129" class="val">93</text></svg>
+<p>We picked every tuning parameter on two earlier validation folds (December 2025 to February 2026, and March to May 2026;
+average 57.5% within 10% over 945 sales). Only then did we rebuild on sales before <b>1 June 2026</b> and score June to August once.
 No test-period price was used to build or tune anything. All 421 test flats received a prediction.</p>
 <p>R² is low because a handful of large misses dominate a squared-error metric; the judged metric (within 10%) is about the typical flat, where we do well.</p>
 
 <h3>Which steps helped (test fold)</h3>
-<table><tr><th>Model</th><th>Within 10%</th><th>Median $ error</th></tr><tr><td>v1: no stacking, building median, no shift</td><td>53.4%</td><td>$70,522</td></tr><tr><td>+ stacked-unit bedroom imputation</td><td>53.4%</td><td>$70,522</td></tr><tr><td>+ building quantile</td><td>54.9%</td><td>$64,658</td></tr><tr><td>+ selection-bias shift (final)</td><td>54.9%</td><td>$64,658</td></tr></table>
+<table><tr><th>Model</th><th>Within 10%</th><th>Median $ error</th></tr><tr><td>v1 model (repeat-sales ladder + stacked beds)</td><td>54.9%</td><td>$64,658</td></tr><tr><td>+ floor premium</td><td>55.6%</td><td>$62,425</td></tr><tr><td>+ shrink thin building cells</td><td>53.7%</td><td>$67,182</td></tr><tr><td>final (all params from 2-fold validation)</td><td>53.9%</td><td>$66,841</td></tr></table>
 
 <h3>Accuracy by evidence tier (test fold)</h3>
-<table><tr><th>Evidence used</th><th>Sales</th><th>Within 10%</th><th>Median bias</th></tr><tr><td>own sale+building beds</td><td>209</td><td>58.4%</td><td>3.8%</td></tr><tr><td>building beds</td><td>141</td><td>61.0%</td><td>5.5%</td></tr><tr><td>building</td><td>26</td><td>42.3%</td><td>-7.8%</td></tr><tr><td>own sale+building</td><td>21</td><td>14.3%</td><td>21.1%</td></tr><tr><td>suburb beds</td><td>20</td><td>45.0%</td><td>4.5%</td></tr></table>
+<table><tr><th>Evidence used</th><th>Sales</th><th>Within 10%</th><th>Median bias</th></tr><tr><td>own sale+building beds</td><td>209</td><td>60.8%</td><td>4.4%</td></tr><tr><td>building beds</td><td>141</td><td>53.9%</td><td>6.3%</td></tr><tr><td>building</td><td>26</td><td>42.3%</td><td>-7.8%</td></tr><tr><td>own sale+building</td><td>21</td><td>19.0%</td><td>19.4%</td></tr><tr><td>suburb beds</td><td>20</td><td>45.0%</td><td>4.5%</td></tr></table>
 
 <h2>Data</h2>
 <ul>
@@ -70,6 +73,7 @@ smoothed with a second-difference penalty, outliers trimmed at 4 MAD.</li>
 <li><b>Local drift.</b> Each suburb's and building's growth above or below the city, as % per year, shrunk toward zero (Bayesian-style, by holding years).</li>
 <li><b>Value ladder.</b> Every past sale is moved to 31 August 2026. For each flat we take the best evidence available:
 same building and bedrooms → same building (lower quantile when bedrooms unknown) → suburb and bedrooms → suburb → city.</li>
+<li><b>Floor and thin cells.</b> Building comparables are moved to the target flat's floor, and building-and-bedroom groups with few sales are shrunk toward the suburb-and-bedroom median.</li>
 <li><b>Blend.</b> If the flat sold before, blend its own index-adjusted sale with the building comparable in log space,
 trusting old sales less (weight halves after 5 years).</li>
 </ol>
@@ -80,8 +84,11 @@ trusting old sales less (weight halves after 5 years).</li>
 <ul>
 <li>Flats with an old sale but no known bedrooms are weak (few test cases, large misses): the building may mix studios and 3-bedders.</li>
 <li>A global downward shift for the $1.2M truncation did not help on validation, so we left it out rather than tune on the test.</li>
+<li>Tuning on two folds raised validation accuracy from 55.9% to 57.5%, but on the final test it scored 53.9% against 54.9% for our simpler first version.
+With 421 test sales, one percentage point is about four flats, well inside the noise, so we kept the validation-chosen settings rather than pick by test score.
+Like-for-like against the baseline it improved (56.0% vs 53.4% for v1), and R² rose from 0.12 to 0.20.</li>
 <li>About 6,700 shop and office titles get a value but are probably poorly valued; they are not scored.</li>
-<li>Not yet used: floor level, aspect, views. Floor is recoverable from unit numbers (Unit 1204 → floor 12) and is the obvious next step.</li>
+<li>Not yet used: aspect and views. Both need outside data (building footprints and orientation) and a new dated check.</li>
 </ul>
 <p class="muted">Estimates are automated and indicative only. Data © Microburbs.</p>
 </main></body></html>
