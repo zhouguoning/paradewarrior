@@ -1,0 +1,145 @@
+{
+  "A1: next-year rent growth ~ past-year price growth": {
+    "n": 50,
+    "r2": 0.041,
+    "coef": {
+      "g_price_past4": [
+        -0.3106,
+        -0.78
+      ]
+    }
+  },
+  "A2: next-year rent growth ~ past-year rate change": {
+    "n": 50,
+    "r2": 0.086,
+    "coef": {
+      "d_rate_past4": [
+        0.0259,
+        2.46
+      ]
+    }
+  },
+  "A3: ~ price + rate + past rent growth": {
+    "n": 50,
+    "r2": 0.099,
+    "coef": {
+      "g_price_past4": [
+        -0.1748,
+        -0.4
+      ],
+      "d_rate_past4": [
+        0.0215,
+        1.58
+      ],
+      "g_rent_past4": [
+        0.0215,
+        0.09
+      ]
+    }
+  },
+  "A4: ~ 2-year price + 2-year rate + past rent + COVID": {
+    "n": 46,
+    "r2": 0.478,
+    "coef": {
+      "g_price_past8": [
+        0.3592,
+        2.59
+      ],
+      "d_rate_past8": [
+        0.019,
+        1.75
+      ],
+      "g_rent_past4": [
+        0.3352,
+        1.91
+      ],
+      "covid": [
+        0.1633,
+        7.34
+      ]
+    }
+  },
+  "corr_future_rent_growth_vs_past_year_by_lead_quarters": {
+    "0": {
+      "price": -0.2,
+      "rate": 0.29
+    },
+    "2": {
+      "price": 0.07,
+      "rate": 0.2
+    },
+    "4": {
+      "price": 0.15,
+      "rate": 0.1
+    },
+    "6": {
+      "price": 0.01,
+      "rate": 0.0
+    },
+    "8": {
+      "price": -0.28,
+      "rate": -0.02
+    }
+  },
+  "B: suburb panel, year FE": {
+    "n": 264,
+    "suburbs": 24,
+    "r2": 0.111,
+    "coef_price": [
+      -0.0108,
+      -0.22
+    ],
+    "coef_past_rent": [
+      0.2851,
+      3.83
+    ]
+  },
+  "C: out-of-sample RMSE of next-year rent growth (pct pts)": {
+    "rent_only": 11.02,
+    "rent+price+rate": 17.39,
+    "naive_last_year": 8.9
+  },
+  "C: forecast window": [
+    "2017Q1",
+    "2025Q2",
+    34
+  ],
+  "episodes_index_2022Q1_eq_1": {
+    "price": {
+      "2016Q2": 0.903,
+      "2017Q4": 0.947,
+      "2019Q2": 0.883,
+      "2020Q1": 0.971,
+      "2021Q4": 1.031,
+      "2022Q2": 0.973,
+      "2023Q4": 1.01,
+      "2024Q4": 1.023,
+      "2025Q4": 1.068,
+      "2026Q2": 1.053
+    },
+    "rent": {
+      "2016Q2": 0.999,
+      "2017Q4": 1.032,
+      "2019Q2": 1.014,
+      "2020Q1": 0.994,
+      "2021Q4": 0.94,
+      "2022Q2": 1.031,
+      "2023Q4": 1.21,
+      "2024Q4": 1.228,
+      "2025Q4": 1.288,
+      "2026Q2": 1.325
+    },
+    "rate": {
+      "2016Q2": 1.841,
+      "2017Q4": 1.5,
+      "2019Q2": 1.429,
+      "2020Q1": 0.64,
+      "2021Q4": 0.1,
+      "2022Q2": 0.386,
+      "2023Q4": 4.247,
+      "2024Q4": 4.35,
+      "2025Q4": 3.6,
+      "2026Q2": 4.254
+    }
+  }
+}

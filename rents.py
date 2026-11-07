@@ -108,11 +108,11 @@ def predict(m, t, w_b=0.6, w_s=0.85, half=2.0, k=2, carry=0.5, shift=0.0, use_fl
     """returns (log rent without car space, log rent with car space, tier)"""
     T = m["tabs"]
     kb = pd.Series(list(zip(t.bld, t.beds)), index=t.index)
-    bb = kb.map(T["bb"]["median"]).astype(float).values; nbb = kb.map(T["bb"]["count"]).astype(float).values
-    b = t.bld.map(T["b"]["median"]).astype(float).values
-    sb = pd.Series(list(zip(t.suburb, t.beds))).map(T["sb"]).astype(float).values
-    s = t.suburb.map(T["s"]).astype(float).values
-    cb = t.beds.map(T["cb"]).astype(float).values
+    bb = kb.map(T["bb"]["median"]).to_numpy(dtype=float, copy=True); nbb = kb.map(T["bb"]["count"]).to_numpy(dtype=float, copy=True)
+    b = t.bld.map(T["b"]["median"]).to_numpy(dtype=float, copy=True)
+    sb = pd.Series(list(zip(t.suburb, t.beds))).map(T["sb"]).to_numpy(dtype=float, copy=True)
+    s = t.suburb.map(T["s"]).to_numpy(dtype=float, copy=True)
+    cb = t.beds.map(T["cb"]).to_numpy(dtype=float, copy=True)
     if use_floor:
         fadj = (m["fslope"] * (t.fl - t.bld.map(m["bmf"]))).fillna(0).values
         bb, b = bb + fadj, b + fadj
@@ -122,8 +122,8 @@ def predict(m, t, w_b=0.6, w_s=0.85, half=2.0, k=2, carry=0.5, shift=0.0, use_fl
     comp, tier = np.full(len(t), m["city"]), np.full(len(t), "city", object)
     for name, v in [("suburb", s), ("beds", cb), ("suburb_beds", sb), ("building", b), ("building_beds", bb)]:
         o = ~np.isnan(v); comp[o] = v[o]; tier[o] = name
-    own = t.gnaf_id.map(m["last"].adj0).astype(float).values
-    oy = t.gnaf_id.map(m["last"].yrs).astype(float).values
+    own = t.gnaf_id.map(m["last"].adj0).to_numpy(dtype=float, copy=True)
+    oy = t.gnaf_id.map(m["last"].yrs).to_numpy(dtype=float, copy=True)
     has = ~np.isnan(own)
     w = np.where(np.isin(tier, ["building", "building_beds"]), w_b, w_s) / (1 + np.nan_to_num(oy) / half)
     base = np.where(has, w * np.nan_to_num(own) + (1 - w) * comp, comp) + carry * m["trend_q"] + shift
@@ -178,7 +178,7 @@ if __name__ == "__main__":
         print("ABLATION", name, round(abl[name]["median_abs_err"]), round(abl[name]["within100"], 3))
     out["ablation"] = abl
     # baseline: suburb x bedrooms median (as on the task page)
-    sb = pd.Series(list(zip(ht.suburb, ht.beds))).map(mt["tabs"]["sb"]).astype(float).values
+    sb = pd.Series(list(zip(ht.suburb, ht.beds))).map(mt["tabs"]["sb"]).to_numpy(dtype=float, copy=True)
     sb = np.where(np.isnan(sb), mt["city"], sb)
     out["baseline_suburb_beds"] = score(ht, sb, sb)
     print("BASELINE suburb x beds", round(out["baseline_suburb_beds"]["median_abs_err"]), round(out["baseline_suburb_beds"]["within100"], 3))

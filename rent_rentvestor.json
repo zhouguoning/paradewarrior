@@ -1,0 +1,101 @@
+{
+  "calm 2016-2019 (rates flat/low)": {
+    "growth_pct": {
+      "Q1 cheapest": 1.3,
+      "Q2": 1.1,
+      "Q3": -0.3,
+      "Q4": 0.0,
+      "Q5 dearest": -3.0
+    },
+    "n": 3892,
+    "cheap_minus_dear_pts": 4.3,
+    "by_bedrooms_pct": {
+      "0": 1.2,
+      "1": -0.7,
+      "2": 0.1,
+      "3": 0.1
+    }
+  },
+  "hiking cycle 2022-05 to 2024-12": {
+    "growth_pct": {
+      "Q1 cheapest": 9.3,
+      "Q2": 7.3,
+      "Q3": 4.5,
+      "Q4": 3.4,
+      "Q5 dearest": 0.1
+    },
+    "n": 3814,
+    "cheap_minus_dear_pts": 9.2,
+    "by_bedrooms_pct": {
+      "0": 5.9,
+      "1": 5.3,
+      "2": 4.2,
+      "3": 4.6
+    }
+  },
+  "relist_by_year": {
+    "2016": {
+      "median_pct": 2.0,
+      "share_over_10pct": 10.0
+    },
+    "2017": {
+      "median_pct": 2.4,
+      "share_over_10pct": 6.0
+    },
+    "2018": {
+      "median_pct": 1.1,
+      "share_over_10pct": 5.0
+    },
+    "2019": {
+      "median_pct": -0.8,
+      "share_over_10pct": 4.0
+    },
+    "2020": {
+      "median_pct": -7.8,
+      "share_over_10pct": 3.0
+    },
+    "2021": {
+      "median_pct": -3.5,
+      "share_over_10pct": 11.0
+    },
+    "2022": {
+      "median_pct": 7.5,
+      "share_over_10pct": 41.0
+    },
+    "2023": {
+      "median_pct": 10.9,
+      "share_over_10pct": 52.0
+    },
+    "2024": {
+      "median_pct": 3.6,
+      "share_over_10pct": 29.0
+    },
+    "2025": {
+      "median_pct": 2.9,
+      "share_over_10pct": 12.0
+    },
+    "2026": {
+      "median_pct": 3.7,
+      "share_over_10pct": 10.0
+    }
+  },
+  "simulation": {
+    "first_round_rent_change_pct": [
+      -4.4,
+      -1.8,
+      -0.7
+    ],
+    "loop_gain": [
+      -0.052,
+      -0.0,
+      0.052
+    ],
+    "share_runs_spiral": 0.0,
+    "total_rent_change_pct": [
+      -4.4,
+      -1.8,
+      -0.7
+    ]
+  },
+  "spiral_requirement_phi_at_extreme_params": 1.85
+}

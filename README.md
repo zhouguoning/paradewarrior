@@ -12,6 +12,17 @@ We entered two data tasks with one engine: a repeat-sales (or repeat-rent) index
 
 **The clever step:** parking is priced *inside* the same building and bedroom count (about $70 a week, highest for one-bedders), every past advert is normalised to its no-parking equivalent, and the rent trend is carried forward from the cutoff to the scoring window.
 
+### Fair Rent Check app
+
+A renter's tool built on the Task 4 model: type any City of Sydney address and optionally the asking rent, and see the fair rent
+(with and without parking), a realistic range, the suburb and building rent trend, how the asking rent compares, and negotiation pointers.
+It runs locally from the supplied files, so no data is published.
+
+```bash
+pip install streamlit pandas numpy
+streamlit run app.py
+```
+
 ## Task 5: value every flat
 
 **What we built:** a sale-value estimate as at 31 August 2026 for all 181,711 unit-style addresses in the City of Sydney (`valuation_paradewarrior.csv`).

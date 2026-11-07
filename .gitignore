@@ -11,3 +11,5 @@ data/
 explore_out.txt
 out/
 test_predictions.csv
+
+rent_vs_rates_series.csv

@@ -6,3 +6,5 @@ matplotlib==3.10.9
 python-dotenv==1.2.1
 notebook==7.5.8
 ipykernel==6.31.0
+streamlit
+numpy
