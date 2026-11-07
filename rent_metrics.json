@@ -1,0 +1,161 @@
+{
+  "validation": {
+    "folds": [
+      [
+        "2025-07-31",
+        "2025-09-30"
+      ],
+      [
+        "2026-01-31",
+        "2026-03-31"
+      ]
+    ],
+    "params": {
+      "w_b": 0.8,
+      "w_s": 0.85,
+      "half": 4.0,
+      "k": 2,
+      "carry": 0.5,
+      "shift": 0.0,
+      "use_floor": false
+    },
+    "per_fold": [
+      {
+        "n": 2065,
+        "median_abs_err": 45.6754949834301,
+        "within100": 0.7539951573849879,
+        "median_bias": -3.1022819306049314,
+        "r2": 0.8507441778399133
+      },
+      {
+        "n": 1701,
+        "median_abs_err": 48.17267750282804,
+        "within100": 0.7360376249265138,
+        "median_bias": -7.138749550803141,
+        "r2": 0.8652326725799437
+      }
+    ]
+  },
+  "test": {
+    "window": [
+      "2026-05-31",
+      "2026-07-31"
+    ],
+    "n": 2592,
+    "median_abs_err": 44.40890856537345,
+    "within100": 0.7766203703703703,
+    "median_bias": 12.04692107506827,
+    "r2": 0.8495774416440584
+  },
+  "ablation": {
+    "v1 ladder (own advert + building + suburb)": {
+      "n": 2592,
+      "median_abs_err": 46.52783201165937,
+      "within100": 0.753858024691358,
+      "median_bias": 6.036693267121734,
+      "r2": 0.8466741731558007
+    },
+    "+ shrink thin building cells": {
+      "n": 2592,
+      "median_abs_err": 46.66819854772973,
+      "within100": 0.7604166666666666,
+      "median_bias": 6.893927358818701,
+      "r2": 0.8345391219755628
+    },
+    "+ floor premium": {
+      "n": 2592,
+      "median_abs_err": 48.14665464419903,
+      "within100": 0.7608024691358025,
+      "median_bias": 7.546528098442565,
+      "r2": 0.8360886484665649
+    },
+    "+ trend carry to scoring window (final)": {
+      "n": 2592,
+      "median_abs_err": 44.40890856537345,
+      "within100": 0.7766203703703703,
+      "median_bias": 12.04692107506827,
+      "r2": 0.8495774416440584
+    }
+  },
+  "baseline_suburb_beds": {
+    "n": 2592,
+    "median_abs_err": 94.17696531398195,
+    "within100": 0.5138888888888888,
+    "median_bias": -31.56693460212557,
+    "r2": 0.6035456788510959
+  },
+  "test_by_tier": {
+    "building": {
+      "n": 32,
+      "median_abs_err": 270.0905890692785,
+      "within100": 0.125,
+      "median_bias": -133.20095541227,
+      "r2": 0.13374702972635166
+    },
+    "building_beds": {
+      "n": 618,
+      "median_abs_err": 57.051657822890604,
+      "within100": 0.7184466019417476,
+      "median_bias": 3.3464036882725168,
+      "r2": 0.8289167800786766
+    },
+    "own_lease+building": {
+      "n": 64,
+      "median_abs_err": 118.39837103312016,
+      "within100": 0.375,
+      "median_bias": -14.200072697287453,
+      "r2": 0.42673327869753064
+    },
+    "own_lease+building_beds": {
+      "n": 1796,
+      "median_abs_err": 37.4212428911801,
+      "within100": 0.8346325167037862,
+      "median_bias": 13.976228767022235,
+      "r2": 0.9251223158443677
+    },
+    "own_lease+suburb_beds": {
+      "n": 43,
+      "median_abs_err": 76.17009633037378,
+      "within100": 0.6046511627906976,
+      "median_bias": 30.974879713317023,
+      "r2": 0.8254335732630282
+    },
+    "suburb_beds": {
+      "n": 37,
+      "median_abs_err": 156.39005576089562,
+      "within100": 0.40540540540540543,
+      "median_bias": 58.254267292042414,
+      "r2": 0.4808759688421689
+    }
+  },
+  "parking_premium_pct_by_bedrooms": {
+    "0": 4.4,
+    "1": 9.7,
+    "2": 7.0,
+    "3": 4.0
+  },
+  "final": {
+    "tiers": {
+      "own_lease+building_beds": 45868,
+      "building_beds": 13814,
+      "own_lease+suburb_beds": 1895,
+      "own_lease+building": 1880,
+      "building": 1249,
+      "suburb_beds": 967,
+      "beds": 60,
+      "own_lease+beds": 38,
+      "suburb": 4,
+      "own_lease+suburb": 2
+    },
+    "floor_slope": 0.002663339602053441,
+    "parking_premium_pct_by_bedrooms": {
+      "0": 4.9,
+      "1": 9.8,
+      "2": 7.2,
+      "3": 3.5
+    },
+    "median_weekly_parking_premium": 70.5,
+    "trend_q": 0.007825617107703107,
+    "repeat_pairs": 54473
+  }
+}

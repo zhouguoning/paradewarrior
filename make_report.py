@@ -2,6 +2,7 @@
 import json, html
 import numpy as np, pandas as pd
 import model as M
+from make_rent_section import section as rent_section
 
 m = json.load(open("metrics.json"))
 tp = pd.read_csv("test_predictions.csv", parse_dates=["sold_date"])
@@ -57,7 +58,7 @@ drift_items = [(k, round(100 * v, 1)) for k, v in pd.concat([ds.head(4), ds.tail
 
 page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>paradewarrior: Value every flat</title>
+<title>paradewarrior: Sydney flats</title>
 <style>
 :root{{--fg:#1a202c;--muted:#4a5568;--bg:#fff;--card:#f7fafc;--acc:#2b6cb0;--line:#e2e8f0}}
 @media (prefers-color-scheme:dark){{:root{{--fg:#e2e8f0;--muted:#a0aec0;--bg:#1a202c;--card:#2d3748;--acc:#63b3ed;--line:#4a5568}}}}
@@ -70,7 +71,8 @@ svg{{width:100%;height:auto;margin:10px 0}} svg .lab{{font-size:12px;fill:var(--
 code{{background:var(--card);padding:1px 5px;border-radius:4px}}
 </style></head><body><main>
 <p class="muted">Microburbs Hackathon · Task 5 · team paradewarrior · 7 November 2026</p>
-<h1>Value every flat: a repeat-sales ladder that knows which building you're in</h1>
+<p><a href="#task5">Task 5: sale values</a> · <a href="#task4">Task 4: weekly rents</a></p>
+<h1 id="task5">Task 5: value every flat, with a repeat-sales ladder that knows which building you're in</h1>
 <p>We valued all 181,711 City of Sydney addresses as at 31 August 2026. On {T['n']} later flat sales we held out
 (1 June to 31 August 2026, under $1.2M), <b>{pct(T['within10'])}</b> of our estimates landed within 10% of the sale price.
 On the same flats where the task page's best baseline applies (last sale updated by a citywide index), that baseline scored
@@ -147,6 +149,7 @@ Like-for-like against the baseline it improved (56.0% vs 53.4% for v1), and R² 
 <li>About 6,700 shop and office titles get a value but are probably poorly valued; they are not scored.</li>
 <li>Not yet used: aspect and views. Both need outside data (building footprints and orientation) and a new dated check.</li>
 </ul>
+{rent_section(bar_svg)}
 <p class="muted">Estimates are automated and indicative only. Data © Microburbs.</p>
 </main></body></html>"""
 open("report.html", "w", encoding="utf-8").write(page)
